@@ -1,0 +1,60 @@
+<script>
+g=0; // game over
+
+// Initialization
+a=function(){
+  m=[]; // model: 4x5 grid
+  c=1; // current number to click
+  n=1; // next number to appear
+  h=""; // HTML code
+  for(i=0;i<5;i++){
+    h+="<tr>";
+    for(j=0;j<4;j++){
+      h+="<th id=t"+(i*4+j)+" width=20 onclick=o(this)>\xa0";
+      m[i*4+j]=0;
+    }
+  }
+  t.innerHTML=h;
+  
+  // Every 500ms,
+  // If there is room => a new number appears
+  // else => game over
+  s=setInterval(function(){
+    if(!g){
+      if(n<c+20){
+        for(k=-1;;k+=~~(Math.random()*99)){
+          z=k%20; // temp
+          if(m[z]==0){
+            m[z]=n;
+            top["t"+z].innerHTML=n;
+            n++;
+            break;
+          }
+        }
+      }
+      else{
+        g=1;
+        t.outerHTML=c-1;
+      }
+    }
+  }, 500);
+}
+
+// On <th> click,
+// if it contains the right number => ok
+// else => game over
+function o(q){
+  if(!g){
+    if(q.innerHTML == c){
+      q.innerHTML="\xa0";
+      m[m.indexOf(c)]=0;
+      c++;
+    }
+    else{
+      g=1;
+      t.outerHTML=c-1;
+    }
+  }
+}
+</script>
+<button onclick='outerHTML="<table border id=t>";a()'>Go
